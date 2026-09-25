@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NoteMap</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="landing-screen" id="landingScreen">
+  <div class="landing-glow glow-a"></div>
+  <div class="landing-glow glow-b"></div>
+
+  <header class="landing-header">
+    <div class="landing-brand">
+      <div class="logo-mark" aria-hidden="true">
+        <span class="logo-dot d1"></span><span class="logo-dot d2"></span><span class="logo-dot d3"></span>
+        <span class="logo-line l1"></span><span class="logo-line l2"></span>
+      </div>
+      <div><div class="landing-brand-name">Note<span>Map</span></div><div class="landing-brand-sub">Bản đồ ghi chú</div></div>
+    </div>
+  </header>
+
+  <main class="landing-main">
+    <section class="landing-copy">
+      <div class="landing-kicker">✦&nbsp; Kết nối ý tưởng <b>•</b> <span>Mở rộng tư duy</span></div>
+      <h1>Chào mừng đến với<br><em>NoteMap</em></h1>
+      <p>Ứng dụng dành cho ghi chú, sơ đồ tư duy và kết nối ý tưởng.<br>Biến những suy nghĩ rời rạc thành bức tranh lớn đầy cảm hứng.</p>
+      <div class="landing-actions">
+        <button class="launch-card primary-launch" id="newProjectBtn" type="button">
+          <span class="launch-icon">＋</span>
+          <span class="launch-copy"><strong>New Project</strong><small>Tạo không gian ý tưởng mới</small></span>
+          <span class="launch-arrow">›</span>
+        </button>
+        <button class="launch-card" id="openProjectBtn" type="button">
+          <span class="launch-icon folder-icon">□</span>
+          <span class="launch-copy"><strong>Open Project</strong><small>Mở dự án có sẵn</small></span>
+          <span class="launch-arrow">›</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="landing-visual" aria-label="Minh họa sơ đồ ý tưởng">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <svg class="hero-wires" viewBox="0 0 760 430" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="heroLine" x1="0" x2="1"><stop stop-color="#24d7ff"/><stop offset=".52" stop-color="#7b5cff"/><stop offset="1" stop-color="#df46ff"/></linearGradient>
+          <filter id="heroGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M355 220 C320 130 300 124 240 105"/>
+        <path d="M355 220 C300 230 270 260 205 275"/>
+        <path d="M355 220 C420 205 450 150 505 115"/>
+        <path d="M355 220 C445 230 485 238 575 220"/>
+        <path d="M355 220 C350 285 380 315 425 335"/>
+      </svg>
+      <div class="hero-note note-main"><span>💡</span><b>Ý tưởng</b></div>
+      <div class="hero-note note-a">▣&nbsp; Ghi chú</div>
+      <div class="hero-note note-b">🎓&nbsp; Học tập</div>
+      <div class="hero-note note-c">✦&nbsp; Sáng tạo</div>
+      <div class="hero-note note-d">▣&nbsp; Công việc</div>
+      <div class="hero-note note-e">◎&nbsp; Kế hoạch</div>
+      <div class="floating-card float-a"><b>Từ những ghi chú nhỏ...</b><span></span><span></span><span></span></div>
+      <div class="floating-card float-b"><b>...mọi ý tưởng đều<br>có thể kết nối</b><div class="sparkline">⌁⌁⌁◆⌁◆⌁◆</div></div>
+      <div class="floating-card float-c"><b>...đến bức tranh lớn</b><div class="mini-map-icon">●╲●<br>&nbsp;╲●</div></div>
+    </section>
+  </main>
+
+  <section class="landing-features">
+    <article><div class="feature-icon">◉</div><div><h3>Ghi chú tự do</h3><p>Viết, sắp xếp và phát triển ý tưởng một cách linh hoạt.</p></div></article>
+    <article><div class="feature-icon cyan">⌘</div><div><h3>Sơ đồ tư duy</h3><p>Biến ý tưởng thành mind map trực quan.</p></div></article>
+    <article><div class="feature-icon pink">🔗</div><div><h3>Kết nối ý tưởng</h3><p>Liên kết ghi chú, chủ đề và tạo bức tranh tổng thể.</p></div></article>
+    <article><div class="feature-icon gold">✦</div><div><h3>Kích thích sáng tạo</h3><p>Không gian không giới hạn cho những ý tưởng lớn hơn.</p></div></article>
+  </section>
+</div>
+
+<input id="projectFileInput" type="file" accept=".notemap,application/json" hidden>
+
+<div class="app" id="workspaceApp" style="display:none">
+  <header class="top">
+    <button class="home-btn" id="homeBtn" type="button" title="Về trang đầu">←</button>
+    <div class="brand">◉ NoteMap</div>
+    <div class="crumb" id="projectName">Dự án mới</div>
+    <div class="spacer"></div>
+    <span class="status unsaved" id="saveStatus">Chưa lưu file</span>
+    <input id="search" class="search" placeholder="Tìm note... (Ctrl K)"/>
+    <button class="btn save-file-btn" id="saveFileBtn" title="Lưu dự án ra file .notemap (Ctrl+S)">💾 Lưu</button>
+    <button class="btn" id="resetBtn">Làm trống</button>
+    <button class="btn primary" id="addTop">+ Tạo note</button>
+  </header>
+
+  <div class="body">
+    <aside class="sidebar">
+      <button class="btn primary" id="addSide" style="width:100%">+ Tạo note mới</button>
+
+      <div class="nav view-nav active" data-view="overview" id="navOverview" style="margin-top:14px">
+        <span>▣ Tổng quan</span>
+      </div>
+      <div class="nav view-nav" data-view="notes" id="navNotes">
+        <span>☷ Tất cả note</span><span class="nav-count" id="notesCount">0</span>
+      </div>
+      <div class="nav view-nav" data-view="trash" id="navTrash">
+        <span>🗑 Thùng rác</span><span class="nav-count" id="trashCount">0</span>
+      </div>
+
+      <div class="side-title">Nhãn</div>
+      <div class="nav label-nav"><span class="tagdot" style="background:#ff4d7a"></span>Quan trọng</div>
+      <div class="nav label-nav"><span class="tagdot" style="background:#f4b740"></span>Ý tưởng</div>
+      <div class="nav label-nav"><span class="tagdot" style="background:#4da3ff"></span>Đang làm</div>
+      <div class="nav label-nav"><span class="tagdot" style="background:#61d6a3"></span>Hoàn thành</div>
+    </aside>
+
+    <div class="center-stage">
+      <main class="canvas-wrap" id="canvas">
+        <div class="world" id="world">
+          <svg class="connections" id="svg"></svg>
+          <div id="nodes"></div>
+        </div>
+        <div class="toolbar">
+          <button class="toolbtn" id="zoomIn" title="Phóng to">+</button>
+          <button class="toolbtn" id="zoomOut" title="Thu nhỏ">−</button>
+          <button class="toolbtn" id="fit" title="Đưa canvas về vị trí ban đầu">⌂</button>
+        </div>
+      </main>
+
+      <section class="data-view" id="allNotesView">
+        <div class="view-header">
+          <div>
+            <h2>Tất cả note</h2>
+            <p>Danh sách toàn bộ note hiện có trong NoteMap.</p>
+          </div>
+          <button class="btn primary" id="addFromTable">+ Tạo note</button>
+        </div>
+        <div class="table-card">
+          <table class="notes-table">
+            <thead>
+              <tr><th>Note</th><th>Nhãn</th><th>Nội dung</th><th>Màu</th><th></th></tr>
+            </thead>
+            <tbody id="notesTableBody"></tbody>
+          </table>
+          <div class="table-empty" id="notesEmpty" style="display:none">Chưa có note nào.</div>
+        </div>
+      </section>
+
+      <section class="data-view" id="trashView">
+        <div class="view-header">
+          <div>
+            <h2>Thùng rác</h2>
+            <p>Các note đã xóa được giữ tại đây để bạn có thể khôi phục.</p>
+          </div>
+          <button class="btn" id="restoreSelectedBtn" disabled>↶ Khôi phục đã chọn</button>
+        </div>
+        <div class="trash-selection-info" id="trashSelectionInfo">Chưa chọn note nào.</div>
+        <div class="table-card">
+          <table class="notes-table trash-table">
+            <thead>
+              <tr><th class="check-col"></th><th>Note đã xóa</th><th>Nhãn</th><th>Nội dung</th><th>Thời gian xóa</th><th></th></tr>
+            </thead>
+            <tbody id="trashTableBody"></tbody>
+          </table>
+          <div class="table-empty" id="trashEmpty" style="display:none">Thùng rác đang trống.</div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="props">
+      <h3 class="props-title">Thuộc tính</h3>
+      <div id="noSelection" class="empty">
+        Chọn một note để chỉnh sửa hoặc bấm vào dây nối để chọn dây.<br><br>
+        <span class="kbd">N</span> tạo note • kéo phần tiêu đề để di chuyển • kéo từ bất kỳ chấm tròn nào sang đúng chấm tròn bạn muốn nối.
+      </div>
+
+      <div id="editor" style="display:none">
+        <div class="field"><label>Tiêu đề</label><input id="titleInput"/></div>
+
+        <div class="field rich-field">
+          <label>Nội dung</label>
+          <div class="rich-toolbar" id="richToolbar">
+            <div class="toolbar-row">
+              <select id="blockFormat" class="rich-select" title="Kiểu đoạn văn">
+                <option value="p">Đoạn văn</option>
+                <option value="h1">Tiêu đề 1</option>
+                <option value="h2">Tiêu đề 2</option>
+                <option value="h3">Tiêu đề 3</option>
+                <option value="blockquote">Trích dẫn</option>
+              </select>
+              <select id="fontName" class="rich-select font-select" title="Phông chữ">
+                <option value="Inter">Inter</option>
+                <option value="Arial">Arial</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+              </select>
+              <select id="fontSize" class="rich-select size-select" title="Cỡ chữ">
+                <option value="12">12</option>
+                <option value="14" selected>14</option>
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="24">24</option>
+                <option value="32">32</option>
+                <option value="48">48</option>
+              </select>
+            </div>
+
+            <div class="toolbar-row toolbar-buttons">
+              <button type="button" class="rich-btn" data-command="bold" data-state-command="bold" title="In đậm (Ctrl+B)"><b>B</b></button>
+              <button type="button" class="rich-btn" data-command="italic" data-state-command="italic" title="In nghiêng (Ctrl+I)"><i>I</i></button>
+              <button type="button" class="rich-btn" data-command="underline" data-state-command="underline" title="Gạch chân (Ctrl+U)"><u>U</u></button>
+              <button type="button" class="rich-btn" data-command="strikeThrough" data-state-command="strikeThrough" title="Gạch ngang"><s>S</s></button>
+              <span class="toolbar-sep"></span>
+              <button type="button" class="rich-btn" data-command="superscript" title="Chỉ số trên">x²</button>
+              <button type="button" class="rich-btn" data-command="subscript" title="Chỉ số dưới">x₂</button>
+              <span class="toolbar-sep"></span>
+              <button type="button" class="rich-btn" data-command="undo" title="Hoàn tác">↶</button>
+              <button type="button" class="rich-btn" data-command="redo" title="Làm lại">↷</button>
+            </div>
+
+            <div class="toolbar-row toolbar-buttons">
+              <button type="button" class="rich-btn" data-command="justifyLeft" data-state-command="justifyLeft" title="Căn trái">≡</button>
+              <button type="button" class="rich-btn align-center-icon" data-command="justifyCenter" data-state-command="justifyCenter" title="Căn giữa">≡</button>
+              <button type="button" class="rich-btn align-right-icon" data-command="justifyRight" data-state-command="justifyRight" title="Căn phải">≡</button>
+              <button type="button" class="rich-btn justify-icon" data-command="justifyFull" data-state-command="justifyFull" title="Căn đều">☰</button>
+              <span class="toolbar-sep"></span>
+              <button type="button" class="rich-btn" data-command="insertUnorderedList" data-state-command="insertUnorderedList" title="Danh sách dấu chấm">•≡</button>
+              <button type="button" class="rich-btn" data-command="insertOrderedList" data-state-command="insertOrderedList" title="Danh sách đánh số">1≡</button>
+              <button type="button" class="rich-btn" data-command="outdent" title="Giảm thụt lề">⇤</button>
+              <button type="button" class="rich-btn" data-command="indent" title="Tăng thụt lề">⇥</button>
+            </div>
+
+            <div class="toolbar-row color-tools">
+              <label class="mini-color" title="Màu chữ">A <input type="color" id="textColor" value="#ffffff"></label>
+              <label class="mini-color highlight-color" title="Màu nền chữ">▰ <input type="color" id="highlightColor" value="#8b5cf6"></label>
+              <button type="button" class="rich-btn wide" id="linkBtn" title="Chèn liên kết">🔗 Link</button>
+              <button type="button" class="rich-btn wide image-insert-btn" id="imageBtn" title="Chèn hình ảnh vào note">🖼 Ảnh</button>
+              <button type="button" class="rich-btn wide attachment-insert-btn" id="attachmentBtn" title="Tải file lên note">📎 File</button>
+              <button type="button" class="rich-btn" data-command="unlink" title="Gỡ liên kết">⛓</button>
+              <button type="button" class="rich-btn wide" data-command="removeFormat" title="Xóa định dạng">Tx</button>
+            </div>
+          </div>
+          <input id="imageFileInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+          <input id="attachmentFileInput" type="file" multiple hidden>
+          <div id="richEditor" class="rich-editor" contenteditable="true" spellcheck="true" data-placeholder="Nhập nội dung..."></div>
+          <div class="rich-hint">Có thể định dạng như Word, chèn ảnh hoặc tải file trực tiếp vào note. Ảnh và file đính kèm được lưu bên trong file .notemap.</div>
+        </div>
+
+        <div class="field"><label>Nhãn</label><input id="tagInput" placeholder="Ví dụ: Đang làm"/></div>
+
+        <div class="field">
+          <label>Màu note đề xuất</label>
+          <div class="colors" id="colors"></div>
+        </div>
+
+        <div class="field rgb-field">
+          <div class="rgb-head">
+            <label>Màu RGB tùy chỉnh</label>
+            <input type="color" id="noteColorPicker" value="#8b5cf6" title="Chọn màu tự do">
+          </div>
+          <div class="rgb-grid">
+            <label>R<input id="rgbR" type="number" min="0" max="255" value="139"></label>
+            <label>G<input id="rgbG" type="number" min="0" max="255" value="92"></label>
+            <label>B<input id="rgbB" type="number" min="0" max="255" value="246"></label>
+          </div>
+          <div class="rgb-preview-row">
+            <span id="rgbPreview" class="rgb-preview"></span>
+            <input id="hexColor" class="hex-input" value="#8B5CF6" maxlength="7" spellcheck="false">
+          </div>
+        </div>
+
+        <button class="delete" id="deleteBtn">Xóa note</button>
+      </div>
+
+      <div id="edgeEditor" style="display:none">
+        <div class="edge-card">
+          <div class="edge-card-title">Dây nối đang chọn</div>
+          <div id="edgeInfo" class="edge-info"></div>
+        </div>
+        <div class="edge-help">
+          Hai điểm đầu dây sẽ chuyển sang màu vàng. Giữ chuột trái vào một điểm vàng rồi kéo:
+          <br>• Thả vào điểm tròn khác → đổi đầu nối sang đúng điểm đó.
+          <br>• Thả ra vùng trống → gỡ dây nối.
+          <br>• Nháy đúp chuột trái trực tiếp lên dây → xóa nhanh.
+        </div>
+        <button class="delete" id="deleteEdgeBtn">Gỡ dây nối</button>
+      </div>
+    </aside>
+  </div>
+</div>
+<div class="image-editor-modal" id="imageEditorModal" hidden aria-hidden="true">
+  <div class="image-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="imageEditorTitle">
+    <header class="image-editor-header">
+      <div>
+        <h2 id="imageEditorTitle">Chỉnh sửa ảnh</h2>
+        <div class="image-editor-file" id="imageEditorFileName">Hình ảnh</div>
+      </div>
+      <div class="image-editor-header-actions">
+        <button type="button" class="image-mini-btn" id="imageZoomOut">−</button>
+        <button type="button" class="image-mini-btn image-zoom-label" id="imageZoomLabel">100%</button>
+        <button type="button" class="image-mini-btn" id="imageZoomIn">+</button>
+        <button type="button" class="image-mini-btn" id="imageZoomFit">Fit</button>
+        <button type="button" class="image-mini-btn" id="imageZoom100">100%</button>
+        <button type="button" class="image-mini-btn danger" id="imageEditorClose" title="Đóng">✕</button>
+      </div>
+    </header>
+
+    <div class="image-editor-body">
+      <aside class="image-toolrail" aria-label="Công cụ đánh dấu ảnh">
+        <button type="button" class="image-tool active" data-image-tool="select">↖<span>Chọn</span></button>
+        <button type="button" class="image-tool" data-image-tool="rect">▭<span>Rectangle</span></button>
+        <button type="button" class="image-tool" data-image-tool="ellipse">○<span>Ellipse</span></button>
+        <button type="button" class="image-tool" data-image-tool="free">✎<span>Free draw</span></button>
+        <button type="button" class="image-tool" data-image-tool="arrow">→<span>Arrow</span></button>
+        <button type="button" class="image-tool" data-image-tool="text">T<span>Text</span></button>
+        <button type="button" class="image-tool" data-image-tool="eraser">⌫<span>Eraser</span></button>
+        <div class="image-tool-sep"></div>
+        <button type="button" class="image-tool compact" id="imageEditUndo">↶<span>Undo</span></button>
+        <button type="button" class="image-tool compact" id="imageEditRedo">↷<span>Redo</span></button>
+        <button type="button" class="image-tool compact danger-soft" id="imageEditClear">⌧<span>Clear</span></button>
+      </aside>
+
+      <main class="image-editor-stage-wrap">
+        <div class="image-editor-stage" id="imageEditorStage">
+          <canvas id="imageEditorCanvas"></canvas>
+        </div>
+      </main>
+
+      <aside class="image-editor-properties">
+        <h3>Thuộc tính</h3>
+        <div class="image-prop-field">
+          <label>Màu nét</label>
+          <div class="image-color-row">
+            <input type="color" id="imageStrokeColor" value="#ff4d67">
+            <input type="text" id="imageStrokeHex" value="#FF4D67" maxlength="7" spellcheck="false">
+          </div>
+        </div>
+        <div class="image-prop-field">
+          <label>Độ dày <b id="imageStrokeWidthValue">4 px</b></label>
+          <input type="range" id="imageStrokeWidth" min="1" max="16" step="1" value="4">
+        </div>
+        <div class="image-prop-field">
+          <label>Độ mờ <b id="imageOpacityValue">100%</b></label>
+          <input type="range" id="imageOpacity" min="10" max="100" step="5" value="100">
+        </div>
+        <div class="image-prop-field">
+          <label>Fill vùng chọn <b id="imageFillOpacityValue">8%</b></label>
+          <input type="range" id="imageFillOpacity" min="0" max="50" step="1" value="8">
+        </div>
+        <div class="image-selected-card" id="imageSelectedCard">
+          <div class="image-selected-label" id="imageSelectedLabel">Chưa chọn đối tượng</div>
+          <button type="button" class="btn danger-soft" id="imageDeleteSelected" disabled>🗑 Xóa vùng</button>
+        </div>
+        <div class="image-editor-tip">Giữ <b>Shift</b> khi vẽ Rectangle/Ellipse để tạo hình cân đối.</div>
+      </aside>
+    </div>
+
+    <footer class="image-editor-footer">
+      <div>Ctrl+Z / Ctrl+Y hoàn tác trong ảnh • Delete xóa vùng đang chọn</div>
+      <div class="image-editor-footer-actions">
+        <button type="button" class="btn" id="imageEditorCancel">Hủy</button>
+        <button type="button" class="btn primary" id="imageEditorSave">✓ Lưu thay đổi</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
